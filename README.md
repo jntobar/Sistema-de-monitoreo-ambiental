@@ -6,7 +6,7 @@ Este proyecto integrador de Ingeniería en Telemática tiene como objetivo el de
 ## Diagrama Esquemático
 A continuación, se muestra el diagrama esquemático del sistema:
 
-https://github.com/jntobar/Sistema-de-monitoreo-ambiental/blob/main/Circuit%20Schematic/Esquematico.png?raw=true
+![Esquemático del Sistema](https://github.com/jntobar/Sistema-de-monitoreo-ambiental/blob/main/Circuit%20Schematic/Esquematico.png?raw=true)
 
 
 ## Tecnologías Utilizadas
