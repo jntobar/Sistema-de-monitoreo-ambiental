@@ -1,6 +1,16 @@
+from influxdb_client import InfluxDBClient, Point, WritePrecision
 import serial
 import time
 import threading
+
+# Configuración de InfluxDB
+url = "http://localhost:8086"  # URL de InfluxDB (ajusta según la configuración de tu servidor)
+token = "E5tNZbL2HPUSfR-eXV_AS0UK1fxDoKivEw6-B2vZuIyOWAgTu75mii47COrRX8mlrnUYtQalhx3KHejHJMqANQ=="  # Token de autenticación de InfluxDB
+org = "Totem"      # Organización en InfluxDB
+bucket = "Totem_Sensores"         # Bucket para almacenar los datos
+
+client = InfluxDBClient(url=url, token=token, org=org)
+write_api = client.write_api(write_options=SYNCHRONOUS)
 
 # Configura los puertos seriales
 ESP32_PORT = '/dev/ttyUSB0'  # Puerto de la ESP32
@@ -13,6 +23,13 @@ cubic = bytearray([0x11, 0x02, 0x01, 0x01, 0xEB])
 # Variable compartida para almacenar los datos
 data = {"esp32": None, "sensor": None}
 
+# Función para escribir datos en InfluxDB
+def write_to_influxdb(measurement,data):
+    point = Point(measurement).tag("device", measurement)
+    for key, value in data.items():
+        point = point.field(key, value)
+    write_api.write(bucket=bucket, org=org, record=point)
+    
 # Función para leer datos de la ESP32
 def read_esp32():
     try:
@@ -23,6 +40,7 @@ def read_esp32():
             if esp32_ser.in_waiting > 0:
                 line = esp32_ser.readline().decode('utf-8').rstrip()  # Lee la linea y decodifica
                 data["esp32"] = line  # Actualiza los datos de la ESP32
+                write_to_influxdb(data["esp32"])
                 print_combined_data()  # Imprime los datos combinados
     except serial.SerialException as e:
         print(f"Error al abrir el puerto ESP32: {e}")
@@ -47,6 +65,7 @@ def read_sensor():
 
                 # Actualiza los datos del sensor
                 data["sensor"] = f"CO2: {co2} ppm - VOC: {voc} - RH: {rh}% - Temp: {temp}°C - GRIMM PM 2.5: {grimn} µg/m³ - TSI PM 2.5: {tsi} µg/m³"
+                write_to_influxdb(data["sensor"])
                 print_combined_data()  # Imprime los datos combinados
             else:
                 print("No hay respuesta del sensor.")
