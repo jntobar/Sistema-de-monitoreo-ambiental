@@ -8,7 +8,6 @@ A continuación, se muestra el diagrama esquemático del sistema:
 
 ![Esquemático del Sistema](Circuit Schematic/Esquematico.png)
 
-*Reemplaza `ruta/a/tu/imagen/esquematico.png` con la ruta correcta donde se encuentra tu imagen en el repositorio.*
 
 ## Tecnologías Utilizadas
 
