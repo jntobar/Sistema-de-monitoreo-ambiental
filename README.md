@@ -10,6 +10,8 @@ A continuación, se muestra el diagrama esquemático del sistema:
 
 
 ## Tecnologías Utilizadas
+Influxbd
+Grafana
 
 ## Instalación
 Instrucciones para instalar y configurar el proyecto en tu entorno local.
